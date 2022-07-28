@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.buttom-fav {
+  color: White;
+}
+
+.buttom-fav.Mui-selected {
+  color: "red";
+}

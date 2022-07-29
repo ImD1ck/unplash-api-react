@@ -7,10 +7,3 @@ const initialState = {
   status: "idle",
   error: null,
 };
-
-export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
-  const response = await axios.get(
-    `${API_URL}/photos?per_page=20&client_id=${KEY_API}`
-  );
-  return response;
-});

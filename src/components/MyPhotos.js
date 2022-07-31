@@ -20,27 +20,23 @@ import { Link } from "react-router-dom";
 import { getFavorite, delFavMyPhotos } from "../redux/feature/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 
-const handleChange = (event) => {
-  //dispatch(event.target.value);
-};
-
-const handleFil = (event) => {
-  //dispatch(event.target.value);
-};
-
 const MyPhotos = () => {
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.posts);
+
+  const handleFil = (event) => {
+    //dispatch(event.target.value);
+  };
 
   const downloadImg = () => {};
 
   useEffect(() => {
     dispatch(getFavorite());
-  }, []);
+  }, [dispatch]);
 
   // useEffect(() => {
   //   const arrToOrder = favorites.filter((favorites) =>
-  //     favorites.likes.includes("likes")
+  //     favorites.likes.includes()
   //   );
   //   console.log(arrToOrder);
   //   // arrToOrder.sort((a, b) => {
@@ -62,7 +58,7 @@ const MyPhotos = () => {
             <span className="bottom-fav">Search</span>
           </Fab>
         </Link>
-        <Input placeholder="Description" onChange={handleChange} />
+        <Input placeholder="Description" onChange={handleFil} />
         <Box>
           <FormControl fullWidth>
             <InputLabel variant="standard" htmlFor="uncontrolled-native">

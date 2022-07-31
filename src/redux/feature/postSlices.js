@@ -37,7 +37,10 @@ const postSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      state.posts = action.payload;
+      const idFav = state.favorites.map((fav) => fav.id);
+      state.posts = action.payload.map((post) =>
+        idFav.includes(post.id) ? { ...post, fav: true } : post
+      );
     });
   },
 });

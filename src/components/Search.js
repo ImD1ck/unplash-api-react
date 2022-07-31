@@ -17,6 +17,7 @@ import {
   createFavorite,
   deleteFavorite,
   fetchPosts,
+  getFavorite,
 } from "../redux/feature/postSlices";
 
 const Search = () => {
@@ -34,8 +35,8 @@ const Search = () => {
 
   useEffect(() => {
     dispatch(fetchPosts());
-    console.log(posts);
-  }, []);
+    dispatch(getFavorite());
+  }, [dispatch]);
 
   useEffect(() => {
     localStorage.setItem("fav", JSON.stringify(favorites));

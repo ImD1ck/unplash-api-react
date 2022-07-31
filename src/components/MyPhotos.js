@@ -1,31 +1,57 @@
 import {
   Fab,
+  FormControl,
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
   Input,
-  Link,
+  InputLabel,
+  NativeSelect,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { Container } from "@mui/system";
+import SaveIcon from "@mui/icons-material/Save";
+
+import { Box, Container } from "@mui/system";
 
 import { useEffect } from "react";
-import { getFavorite, deleteFavorite } from "../redux/feature/postSlices";
+import { Link } from "react-router-dom";
+import { getFavorite, delFavMyPhotos } from "../redux/feature/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 
 const handleChange = (event) => {
-  //dispatch(fetchPosts(event.target.value));
+  //dispatch(event.target.value);
+};
+
+const handleFil = (event) => {
+  //dispatch(event.target.value);
 };
 
 const MyPhotos = () => {
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.posts);
 
+  const downloadImg = () => {};
+
   useEffect(() => {
     dispatch(getFavorite());
   }, []);
+
+  // useEffect(() => {
+  //   const arrToOrder = favorites.filter((favorites) =>
+  //     favorites.likes.includes("likes")
+  //   );
+  //   console.log(arrToOrder);
+  //   // arrToOrder.sort((a, b) => {
+  //   //   if (a[orderBy] > b[orderBy]) {
+  //   //     return 1;
+  //   //   } else if (a[orderBy] > b[orderBy]) {
+  //   //     return -1;
+  //   //   }
+  //   //   return 0;
+  //   // });
+  // }, []);
 
   return (
     <>
@@ -37,6 +63,25 @@ const MyPhotos = () => {
           </Fab>
         </Link>
         <Input placeholder="Description" onChange={handleChange} />
+        <Box>
+          <FormControl fullWidth>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Filter
+            </InputLabel>
+            <NativeSelect
+              defaultValue={30}
+              inputProps={{
+                name: "filter",
+                id: "uncontrolled-native",
+              }}
+            >
+              <option value={10}>Import Date</option>
+              <option value={20}>Width</option>
+              <option value={30}>Height</option>
+              <option value={40}>Likes</option>
+            </NativeSelect>
+          </FormControl>
+        </Box>
       </div>
 
       <Container maxWidth="md">
@@ -66,19 +111,16 @@ const MyPhotos = () => {
                           "linear-gradient(to bottom, rgba(0,0,0,0) 0%, " +
                           "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.7) 100%)",
                       }}
-                      subtitle={name}
+                      subtitle={<SaveIcon onClick={downloadImg(id)} />}
+                      title={name}
                       actionIcon={
                         <IconButton
                           sx={{ color: "white" }}
                           onClick={() => {
-                            dispatch(deleteFavorite(index));
+                            dispatch(delFavMyPhotos(id));
                           }}
                         >
-                          {rest?.fav ? (
-                            <FavoriteIcon sx={{ color: "red" }} />
-                          ) : (
-                            <FavoriteIcon />
-                          )}
+                          <FavoriteIcon sx={{ color: "red" }} />
                         </IconButton>
                       }
                     ></ImageListItemBar>
@@ -86,7 +128,7 @@ const MyPhotos = () => {
                 );
               }
             )}
-          {favorites.length == 0 && <h1>Not Found</h1>}
+          {favorites.length === 0 && <h1>Not Found</h1>}
         </ImageList>
       </Container>
     </>

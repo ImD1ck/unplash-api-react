@@ -2,7 +2,7 @@ import Search from "./components/Search.js";
 import MyPhotos from "./components/MyPhotos.js";
 
 import { store } from "./redux/store";
-import { Provider, provider } from "react-redux";
+import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./style/App.css";

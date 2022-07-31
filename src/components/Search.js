@@ -5,7 +5,6 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
-  Link,
 } from "@mui/material";
 import Input from "@mui/material/Input";
 import { Container } from "@mui/system";
@@ -13,6 +12,7 @@ import "../style/Search.css";
 
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   createFavorite,
   deleteFavorite,
@@ -34,6 +34,7 @@ const Search = () => {
 
   useEffect(() => {
     dispatch(fetchPosts());
+    console.log(posts);
   }, []);
 
   useEffect(() => {
@@ -103,7 +104,11 @@ const Search = () => {
                             );
                           }}
                         >
-                          <FavoriteIcon sx={{ color: "red" }} />
+                          {rest?.fav ? (
+                            <FavoriteIcon sx={{ color: "red" }} />
+                          ) : (
+                            <FavoriteIcon />
+                          )}
                         </IconButton>
                       }
                     ></ImageListItemBar>

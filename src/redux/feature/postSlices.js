@@ -29,16 +29,20 @@ const postSlice = createSlice({
       const data = localStorage.getItem("fav");
       state.favorites = !data ? [] : JSON.parse(data);
     },
+    delFavMyPhotos: (state, action) => {
+      state.favorites = state.favorites.filter(
+        (fav) => fav.id !== action.payload
+      );
+    },
   },
   extraReducers(builder) {
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      state.status = "succeeded";
       state.posts = action.payload;
     });
   },
 });
 
-export const { createFavorite, deleteFavorite, getFavorite } =
+export const { createFavorite, deleteFavorite, getFavorite, delFavMyPhotos } =
   postSlice.actions;
 
 export default postSlice.reducer;

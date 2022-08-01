@@ -31,9 +31,18 @@ const MyPhotos = ({ setOpen }) => {
   const [handleFilter, setHandleFilter] = useState("");
   const [orderParam, setOrderParam] = useState("likes");
 
-  useEffect(() => {
-    dispatch(getFavorites());
-  }, []);
+  async function downloadImage(imageSrc) {
+    const image = await fetch(imageSrc);
+    const imageBlog = await image.blob();
+    const imageURL = URL.createObjectURL(imageBlog);
+
+    const link = document.createElement("a");
+    link.href = imageURL;
+    link.download = "unplashImage";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   useEffect(() => {
     if (handleFilter === "") {
@@ -50,6 +59,9 @@ const MyPhotos = ({ setOpen }) => {
     dispatch(setFavorites(arrFil));
   }, [orderParam, handleFilter]);
 
+  useEffect(() => {
+    dispatch(getFavorites());
+  }, []);
   // useEffect(() => {
   //   // dispatch(getFavorites());
   //   const arrFil = favorites;
@@ -83,7 +95,7 @@ const MyPhotos = ({ setOpen }) => {
               }}
               onChange={(e) => setOrderParam(e.target.value)}
             >
-              <MenuItem value={"impDate"}>Import Date</MenuItem>
+              <MenuItem value={"create_at"}>Import Date</MenuItem>
               <MenuItem value={"width"}>Width</MenuItem>
               <MenuItem value={"height"}>Height</MenuItem>
               <MenuItem value={"likes"}>Likes</MenuItem>
@@ -106,6 +118,7 @@ const MyPhotos = ({ setOpen }) => {
                   likes,
                   full,
                   thumb,
+                  create_at,
                   ...rest
                 },
                 index
@@ -132,11 +145,12 @@ const MyPhotos = ({ setOpen }) => {
                       }
                       actionIcon={
                         <>
-                          <IconButton
-                            sx={{ color: "white" }}
-                            // onClick={}
-                          >
-                            <DownloadIcon />
+                          <IconButton>
+                            <DownloadIcon
+                              onSubmit={downloadImage(full)}
+                              sx={{ color: "white" }}
+                              download
+                            />
                           </IconButton>
                           <IconButton
                             onClick={() => {

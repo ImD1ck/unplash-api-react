@@ -10,7 +10,7 @@ import "./style/App.css";
 import { useState } from "react";
 
 function App() {
-  const [open, setOpen] = useState("");
+  const [open, setOpen] = useState();
 
   return (
     <div className="App">

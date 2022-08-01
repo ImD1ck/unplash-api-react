@@ -1,2 +1,2 @@
-#Galeria de fotos 
-##Aplicación de React UnPlash-api
+# Galeria de fotos 
+## Aplicación de React UnPlash-api

@@ -7,47 +7,57 @@ import {
   ImageListItemBar,
   Input,
   InputLabel,
-  NativeSelect,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import SaveIcon from "@mui/icons-material/Save";
-
+import DownloadIcon from "@mui/icons-material/Download";
 import { Box, Container } from "@mui/system";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getFavorite, delFavMyPhotos } from "../redux/feature/postSlices";
+import {
+  getFavorites,
+  setFavorites,
+  delFavMyPhotos,
+  currentFav,
+} from "../redux/feature/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 
-const MyPhotos = () => {
+const MyPhotos = ({ setOpen }) => {
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.posts);
-
-  const handleFil = (event) => {
-    //dispatch(event.target.value);
-  };
-
-  const downloadImg = () => {};
+  const [handleFilter, setHandleFilter] = useState("");
+  const [orderParam, setOrderParam] = useState("likes");
 
   useEffect(() => {
-    dispatch(getFavorite());
-  }, [dispatch]);
+    dispatch(getFavorites());
+  }, []);
+
+  useEffect(() => {
+    if (handleFilter === "") {
+      dispatch(getFavorites());
+    }
+    const arrFil = favorites.filter((fav) => {
+      return fav.description?.includes(handleFilter);
+    });
+    if (arrFil !== []) {
+      arrFil.sort((a, b) => {
+        return a[orderParam] - b[orderParam];
+      });
+    }
+    dispatch(setFavorites(arrFil));
+  }, [orderParam, handleFilter]);
 
   // useEffect(() => {
-  //   const arrToOrder = favorites.filter((favorites) =>
-  //     favorites.likes.includes()
-  //   );
-  //   console.log(arrToOrder);
-  //   // arrToOrder.sort((a, b) => {
-  //   //   if (a[orderBy] > b[orderBy]) {
-  //   //     return 1;
-  //   //   } else if (a[orderBy] > b[orderBy]) {
-  //   //     return -1;
-  //   //   }
-  //   //   return 0;
-  //   // });
-  // }, []);
+  //   // dispatch(getFavorites());
+  //   const arrFil = favorites;
+  //   arrFil.sort((a, b) => {
+  //     return a[orderParam] - b[orderParam];
+  //   });
+  //   dispatch(setFavorites(arrFil));
+  // }, [orderParam]);
 
   return (
     <>
@@ -58,24 +68,26 @@ const MyPhotos = () => {
             <span className="bottom-fav">Search</span>
           </Fab>
         </Link>
-        <Input placeholder="Description" onChange={handleFil} />
+        <Input
+          placeholder="Description"
+          onChange={(e) => setHandleFilter(e.target.value)}
+        />
         <Box>
           <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-              Filter
-            </InputLabel>
-            <NativeSelect
-              defaultValue={30}
+            <InputLabel id="demo-select-small"></InputLabel>
+            <Select
+              defaultValue={"likes"}
               inputProps={{
                 name: "filter",
                 id: "uncontrolled-native",
               }}
+              onChange={(e) => setOrderParam(e.target.value)}
             >
-              <option value={10}>Import Date</option>
-              <option value={20}>Width</option>
-              <option value={30}>Height</option>
-              <option value={40}>Likes</option>
-            </NativeSelect>
+              <MenuItem value={"impDate"}>Import Date</MenuItem>
+              <MenuItem value={"width"}>Width</MenuItem>
+              <MenuItem value={"height"}>Height</MenuItem>
+              <MenuItem value={"likes"}>Likes</MenuItem>
+            </Select>
           </FormControl>
         </Box>
       </div>
@@ -99,26 +111,44 @@ const MyPhotos = () => {
                 index
               ) => {
                 return (
-                  <ImageListItem key={id}>
-                    <img src={thumb} alt={description} />
+                  <ImageListItem
+                    key={id}
+                    onClick={() => {
+                      dispatch(currentFav(index));
+                      setOpen(true);
+                    }}
+                  >
+                    <img src={thumb} alt={likes} />
                     <ImageListItemBar
                       sx={{
                         background:
                           "linear-gradient(to bottom, rgba(0,0,0,0) 0%, " +
                           "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0.7) 100%)",
                       }}
-                      subtitle={<SaveIcon onClick={downloadImg(id)} />}
                       title={name}
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: "white" }}
-                          onClick={() => {
-                            dispatch(delFavMyPhotos(id));
-                          }}
-                        >
-                          <FavoriteIcon sx={{ color: "red" }} />
-                        </IconButton>
+                      subtitle={
+                        (description && description) ||
+                        (description === null && "not descrption")
                       }
+                      actionIcon={
+                        <>
+                          <IconButton
+                            sx={{ color: "white" }}
+                            // onClick={}
+                          >
+                            <DownloadIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => {
+                              dispatch(delFavMyPhotos(id));
+                            }}
+                          >
+                            <FavoriteIcon sx={{ color: "red" }} />
+                          </IconButton>
+                        </>
+                      }
+                      //position="below"
+                      author={description}
                     ></ImageListItemBar>
                   </ImageListItem>
                 );

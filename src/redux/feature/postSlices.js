@@ -6,6 +6,7 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", getFotosRequest);
 const initialState = {
   posts: [],
   favorites: [],
+  currentFav: {},
 };
 
 const postSlice = createSlice({
@@ -25,14 +26,30 @@ const postSlice = createSlice({
       state.favorites = state.favorites.filter((fav) => fav.id !== id);
       state.posts[action.payload].fav = false;
     },
-    getFavorite: (state) => {
+    getFavorites: (state) => {
       const data = localStorage.getItem("fav");
       state.favorites = !data ? [] : JSON.parse(data);
+    },
+    setFavorites: (state, action) => {
+      state.favorites = action.payload;
     },
     delFavMyPhotos: (state, action) => {
       state.favorites = state.favorites.filter(
         (fav) => fav.id !== action.payload
       );
+    },
+    currentFav: (state, action) => {
+      state.currentFav = state.favorites[action.payload];
+    },
+    setDescription: (state, action) => {
+      const newArr = state.favorites.map((fav) =>
+        fav.id === state.currentFav.id
+          ? { ...fav, description: action.payload }
+          : fav
+      );
+      console.log(newArr);
+      localStorage.setItem("fav", JSON.stringify(newArr));
+      state.favorites = newArr;
     },
   },
   extraReducers(builder) {
@@ -45,7 +62,15 @@ const postSlice = createSlice({
   },
 });
 
-export const { createFavorite, deleteFavorite, getFavorite, delFavMyPhotos } =
-  postSlice.actions;
+export const {
+  createFavorite,
+  deleteFavorite,
+  getFavorites,
+  setFavorites,
+  currentFav,
+  delFavMyPhotos,
+  filterFav,
+  setDescription,
+} = postSlice.actions;
 
 export default postSlice.reducer;

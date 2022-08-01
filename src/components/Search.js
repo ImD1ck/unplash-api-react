@@ -17,7 +17,7 @@ import {
   createFavorite,
   deleteFavorite,
   fetchPosts,
-  getFavorite,
+  getFavorites,
 } from "../redux/feature/postSlices";
 
 const Search = () => {
@@ -35,7 +35,7 @@ const Search = () => {
 
   useEffect(() => {
     dispatch(fetchPosts());
-    dispatch(getFavorite());
+    dispatch(getFavorites());
   }, [dispatch]);
 
   useEffect(() => {

@@ -36,7 +36,7 @@ const Search = () => {
   useEffect(() => {
     dispatch(fetchPosts());
     dispatch(getFavorites());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("fav", JSON.stringify(favorites));

@@ -25,24 +25,24 @@ import {
 } from "../redux/feature/postSlices";
 import { useDispatch, useSelector } from "react-redux";
 
+// async function downloadImage(imageSrc) {
+//   const image = await fetch(imageSrc);
+//   const imageBlog = await image.blob();
+//   const imageURL = URL.createObjectURL(imageBlog);
+
+//   const link = document.createElement("a");
+//   link.href = imageURL;
+//   link.download = "unplashImage";
+//   document.body.appendChild(link);
+//   link.click();
+//   document.body.removeChild(link);
+// }
+
 const MyPhotos = ({ setOpen }) => {
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.posts);
   const [handleFilter, setHandleFilter] = useState("");
   const [orderParam, setOrderParam] = useState("likes");
-
-  async function downloadImage(imageSrc) {
-    const image = await fetch(imageSrc);
-    const imageBlog = await image.blob();
-    const imageURL = URL.createObjectURL(imageBlog);
-
-    const link = document.createElement("a");
-    link.href = imageURL;
-    link.download = "unplashImage";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
 
   useEffect(() => {
     if (handleFilter === "") {
@@ -62,14 +62,6 @@ const MyPhotos = ({ setOpen }) => {
   useEffect(() => {
     dispatch(getFavorites());
   }, []);
-  // useEffect(() => {
-  //   // dispatch(getFavorites());
-  //   const arrFil = favorites;
-  //   arrFil.sort((a, b) => {
-  //     return a[orderParam] - b[orderParam];
-  //   });
-  //   dispatch(setFavorites(arrFil));
-  // }, [orderParam]);
 
   return (
     <>
@@ -147,9 +139,8 @@ const MyPhotos = ({ setOpen }) => {
                         <>
                           <IconButton>
                             <DownloadIcon
-                              onSubmit={downloadImage(full)}
+                              // onSubmit={downloadImage(full)}
                               sx={{ color: "white" }}
-                              download
                             />
                           </IconButton>
                           <IconButton

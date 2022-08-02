@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/unplash-api-react.git/static/css/main.9e676814.css",
-    "main.js": "/unplash-api-react.git/static/js/main.8c54972e.js",
-    "static/js/787.b978bd17.chunk.js": "/unplash-api-react.git/static/js/787.b978bd17.chunk.js",
+    "main.js": "/unplash-api-react.git/static/js/main.fed0d7e7.js",
+    "static/js/787.746b21d6.chunk.js": "/unplash-api-react.git/static/js/787.746b21d6.chunk.js",
     "index.html": "/unplash-api-react.git/index.html",
     "main.9e676814.css.map": "/unplash-api-react.git/static/css/main.9e676814.css.map",
-    "main.8c54972e.js.map": "/unplash-api-react.git/static/js/main.8c54972e.js.map",
-    "787.b978bd17.chunk.js.map": "/unplash-api-react.git/static/js/787.b978bd17.chunk.js.map"
+    "main.fed0d7e7.js.map": "/unplash-api-react.git/static/js/main.fed0d7e7.js.map",
+    "787.746b21d6.chunk.js.map": "/unplash-api-react.git/static/js/787.746b21d6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.9e676814.css",
-    "static/js/main.8c54972e.js"
+    "static/js/main.fed0d7e7.js"
   ]
 }
